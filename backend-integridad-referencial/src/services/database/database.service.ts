@@ -3,6 +3,7 @@ import { resolve } from 'path';
 import { DataSource } from 'typeorm';
 @Injectable()
 export class DatabaseService {
+  sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
   constructor(
     @Inject('DATA_SOURCE')
     private dataSource: DataSource,
@@ -35,45 +36,46 @@ export class DatabaseService {
   }
   async getDbccConstraints(dbName: string): Promise<any> {
     await this.dataSource.query('use ' + dbName + ' ;');
-    const resultChckConstr = [];
-    const referencedTables = await this.dataSource
-      .query(
-        'select distinct OBJECT_NAME(referenced_object_id)  as Child from sys.foreign_keys',
-      )
-      .then(async (childTable) => {
-        childTable.map(async (object) => {
-          const result = await this.dataSource.query(
-            'use ' +
-              dbName +
-              ' ' +
-              'dbcc checkconstraints( ' +
-              object.Child +
-              ') ',
-          );
-
-          if (result) {
-            console.log('result data =', result);
-            resultChckConstr.push(object);
-          }
-        });
+    const referencedTables = await this.dataSource.query(
+      'select distinct OBJECT_NAME(referenced_object_id)  as Child from sys.foreign_keys',
+    );
+    console.log('Warnigng before referenced tables;');
+    return this.groupCheckConstraints(referencedTables, dbName).then(
+      (object) => {
+        console.log('object', object);
+        return object;
+      },
+    );
+  }
+  async groupCheckConstraints(
+    referencedTables: any[],
+    dbName: string,
+  ): Promise<any> {
+    const resultChkConstraint: any[] = [];
+    referencedTables.map((table) => {
+      this.dbbCheckConstraintTable(table, dbName).then((element) => {
+        if (element) {
+          console.log('elemento=', element);
+          resultChkConstraint.push({ Table: table.Child, Anomalias: element });
+        }
       });
-
-    // for (let i = 0; i < referencedTables.lenght; i++) {
-    //   console.log('referenced tables[i] = ', referencedTables[i]);
-    //   const childTable = await this.dataSource.query(
-    //     'use ' +
-    //       dbName +
-    //       ' ' +
-    //       'dbcc checkconstraints( ' +
-    //       referencedTables[i].Child +
-    //       ') ',
-    //   );
-    //   console.log('result data =', childTable);
-    //   resultChckConstr.push(childTable);
-    // }
-    console.log('result check = ', resultChckConstr);
-    return new Promise((resolve) => {
-      resolve(resultChckConstr);
     });
+    await this.sleep(2000);
+    return new Promise((resolve) => {
+      resolve(resultChkConstraint);
+    });
+  }
+  async dbbCheckConstraintTable(
+    referencedTable: any,
+    dbName: string,
+  ): Promise<any> {
+    return this.dataSource.query(
+      'use ' +
+        dbName +
+        ' ' +
+        'dbcc checkconstraints( ' +
+        referencedTable.Child +
+        ') ',
+    );
   }
 }
