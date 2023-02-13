@@ -7,24 +7,60 @@
   <title>Integridad Referencial</title>
 </head>
 <body>
-  <h1>AUDITORIA DE INTEGRIDAD REFERENCIAL DE BASE DE DATOS</h1>
-  <table class="table">
-    <thead>
-      <tr>
-        <th scope="col">Base de Datos</th>
-        <th scope="col">Opciones</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <th scope="row">1</th>
-        <td>Mark</td>
-      </tr>
-      <tr>
-        <th scope="row">2</th>
-        <td>Jacob</td>
-      </tr>
-    </tbody>
-  </table>
+  <!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <!-- Container wrapper -->
+  <div class="container-fluid">
+    <!-- Navbar brand -->
+    <a class="navbar-brand" href="#">Auditoria Informática</a>
+
+    <!-- Toggle button -->
+    <button
+      class="navbar-toggler"
+      type="button"
+      (click)="basicNavbar.toggle()"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <i class="fas fa-bars"></i>
+    </button>
+
+    <!-- Collapsible wrapper -->
+    <div
+      class="collapse navbar-collapse"
+      id="navbarSupportedContent"
+      mdbCollapse
+      #basicNavbar="mdbCollapse"
+    >
+      
+      
+    </div>
+    <!-- Collapsible wrapper -->
+  </div>
+  <!-- Container wrapper -->
+</nav>
+<!-- Navbar -->
+<div class="row d-flex justify-content-center">
+  <div class="col-md-6" style="text-align: center;">
+    <h1 >INTEGRIDAD REFERENCIAL DE BASE DE DATOS</h1>
+    <table class="table" style="text-align: left;">
+      <thead>
+        <tr>
+          <th scope="col">Base de Datos</th>
+          <th scope="col">Opciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let bd of listaBds">
+          <th scope="row">{{bd['nombre']}}</th>
+          <td><i class="fas fa-eye"></i></td>
+        </tr>
+        
+      </tbody>
+    </table>
+  </div>
+</div>
+  
+  
 </body>
 </html>

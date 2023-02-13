@@ -17,9 +17,9 @@ export class AppComponent {
 
   showBds(){
     this.serviceBd.getBds()
-    .subscribe((data:any)=>{
-      console.log("data",data);
+    .subscribe((data:any)=>{      
       this.listaBds = data;
+      console.log("Bds",this.listaBds);
     })
   }
 
