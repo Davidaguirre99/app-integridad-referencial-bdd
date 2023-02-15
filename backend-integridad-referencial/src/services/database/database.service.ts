@@ -47,6 +47,13 @@ export class DatabaseService {
       },
     );
   }
+  async getTriggersOfADatabase(dbName: string): Promise<any> {
+    await this.dataSource.query('use ' + dbName + ' ;');
+    const triggers = await this.dataSource.query(
+      'select object_id as id_trigger,name,OBJECT_NAME(parent_id) as parent_object from sys.triggers',
+    );
+    return triggers;
+  }
   async groupCheckConstraints(
     referencedTables: any[],
     dbName: string,
