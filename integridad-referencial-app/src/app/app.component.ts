@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { BddataService } from './services/bddata.service';
 
 @Component({
@@ -10,7 +11,8 @@ export class AppComponent {
   title = 'integridad-referencial-app';
   listaBds = [];
   constructor(
-    private serviceBd:BddataService
+    private serviceBd:BddataService,
+    private readonly router:Router
   ){ 
     this.showBds();
   }
@@ -22,5 +24,8 @@ export class AppComponent {
       console.log("Bds",this.listaBds);
     })
   }
-
+  verDetalle(dbName:string){
+    const ruta = ['/detalleBd',dbName];
+    this.router.navigate(ruta);
+  }
 }

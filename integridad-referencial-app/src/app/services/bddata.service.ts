@@ -6,6 +6,7 @@ import { Injectable } from '@angular/core';
 })
 export class BddataService {
   url = "http://localhost:3000";
+  urlReferencedTables = "http://localhost:3000/fk/";
   
   constructor(
     private http:HttpClient
@@ -13,6 +14,10 @@ export class BddataService {
   
    getBds():any{
     return this.http.get(this.url);
+   }
+   getReferencedTables(dbName:string):any {
+    const urlRef = this.urlReferencedTables+dbName;
+    return this.http.get(urlRef);
    }
 
 }
