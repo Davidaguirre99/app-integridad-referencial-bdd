@@ -7,7 +7,8 @@ import { Injectable } from '@angular/core';
 export class BddataService {
   url = "http://localhost:3000";
   urlReferencedTables = "http://localhost:3000/fk/";
-  
+  urlDbcc = "http://localhost:3000/dbcc/"
+  urlTriggers = "http://localhost:3000/triggers/"
   constructor(
     private http:HttpClient
    ) { }
@@ -17,6 +18,14 @@ export class BddataService {
    }
    getReferencedTables(dbName:string):any {
     const urlRef = this.urlReferencedTables+dbName;
+    return this.http.get(urlRef);
+   }
+   getDbccConstraints(dbName:string):any{
+    const urlRef = this.urlDbcc+dbName;
+    return this.http.get(urlRef);
+   }
+   getTriggers(dbName:string):any{
+    const urlRef = this.urlTriggers+dbName;
     return this.http.get(urlRef);
    }
 

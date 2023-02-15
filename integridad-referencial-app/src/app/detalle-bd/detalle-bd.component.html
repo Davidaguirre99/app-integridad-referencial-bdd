@@ -1,10 +1,19 @@
 
 <h3>Tablas con Claves Foraneas</h3>
-
   <div class="container-lg">
     <div class="row" *ngFor="let detail of details">
         <h5 class="card-title">Padre: {{detail['Parent']}} ---> Hijo: {{detail['Child']}}</h5>
-        <p class="card-text"></p>
         <br>
     </div>
   </div>
+<h3>Anomalías de Integridad Referencial</h3>
+<mdb-form-control>
+  <textarea mdbInput class="form-control" id="textAreaExample" rows="4" value="{{detailsDbcc}}"></textarea>
+  <label mdbLabel class="form-label" for="textAreaExample">Message</label>
+</mdb-form-control>
+<h3>Triggers</h3>
+<mdb-form-control>
+  <textarea mdbInput class="form-control" id="textAreaExample" rows="4" value="{{detailsTriggers}}"></textarea>
+  <label mdbLabel class="form-label" for="textAreaExample">Message</label>
+</mdb-form-control>
+<button type="button" class="btn btn-primary" id="descargar" (click)="downloadFile()">DESCARGAR LOG AUDITORÍA</button>
