@@ -37,7 +37,7 @@ export class DatabaseService {
   async getDbccConstraints(dbName: string): Promise<any> {
     await this.dataSource.query('use ' + dbName + ' ;');
     const referencedTables = await this.dataSource.query(
-      'select distinct OBJECT_NAME(referenced_object_id)  as Child from sys.foreign_keys',
+      'select OBJECT_NAME(referenced_object_id)  as Child from sys.foreign_keys',
     );
     console.log('Warnigng before referenced tables;');
     return this.groupCheckConstraints(referencedTables, dbName).then(
